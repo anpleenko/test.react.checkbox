@@ -1,0 +1,31 @@
+.wrap {
+    margin: 20px auto;
+}
+
+input[type='checkbox'] {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.left {
+    margin-right: 30px;
+}
+
+.left,
+.right {
+    float: left;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: 200px;
+    overflow: auto;
+    width: 300px;
+    border: 1px #333 solid;
+    overflow-x: hidden;
+}
+
+label {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
