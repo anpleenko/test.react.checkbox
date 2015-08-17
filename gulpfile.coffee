@@ -1,3 +1,7 @@
+# -----------------------------------
+#   project config
+# -----------------------------------
+
 gulp         = require('gulp')
 
 # browser refresh
@@ -16,9 +20,7 @@ jade         = require('gulp-jade')
 HTMLprettify = require('gulp-html-prettify')
 
 # js compile
-coffee       = require('gulp-coffee')
 coffeex      = require('gulp-coffee-react')
-rjs          = require('gulp-requirejs')
 uglify       = require('gulp-uglify')
 clean        = require('gulp-clean')
 
@@ -27,7 +29,7 @@ browserify   = require('browserify')
 source       = require('vinyl-source-stream')
 
 # -----------------------------------
-#   project variables
+#   project config
 # -----------------------------------
 
 AUTOPREFIXER_CONFIG =
@@ -56,7 +58,7 @@ gulp.task 'server', ['scss', 'jade'], ->
   # gulp watch tack
   gulp.watch 'jade/**/*.jade', ['jade']
   gulp.watch 'scss/**/*.scss', ['scss']
-  gulp.watch 'coffee/**/*.coffee', ['build']
+  gulp.watch 'coffee/**/*.coffee', ['browserify']
 
 gulp.task 'scss', ->
   gulp.src 'scss/**/!(_)*.scss'
@@ -78,26 +80,14 @@ gulp.task 'jade', ->
     .pipe gulp.dest 'build'
     .on 'end', browserSync.reload
 
-# gulp.task 'build', ['coffee'], ->
-#   rjs
-#     baseUrl: 'js'
-#     name: '../bower_components/almond/almond'
-#     include: ['main']
-#     insertRequire: ['main']
-#     out: 'all.js'
-#     wrap: on
-#   .pipe do uglify
-#   .pipe gulp.dest 'build/js'
-#   .pipe browserSync.stream()
-
-#   gulp.src 'js/', read: no
-#     .pipe do clean
-
 gulp.task 'build',["browserify","coffee"], ->
   gulp.src './build/js/main.js'
     .pipe do uglify
     .pipe gulp.dest './build/js'
     .pipe browserSync.stream()
+
+  gulp.src 'js/', read: no
+    .pipe do clean
 
 gulp.task 'browserify', ["coffee"], ->
   browserify './js/main.js'
@@ -106,13 +96,10 @@ gulp.task 'browserify', ["coffee"], ->
     .pipe gulp.dest './build/js'
     .pipe browserSync.stream()
 
-  # gulp.src 'js/', read: no
-    # .pipe do clean
-
 gulp.task 'coffee', ->
   gulp.src 'coffee/**/*.coffee'
     .pipe do coffeex
     .pipe gulp.dest 'js'
 
 
-gulp.task 'default', ['server', 'scss', 'jade', 'build']
+gulp.task 'default', ['server', 'scss', 'jade', 'browserify']
