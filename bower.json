@@ -1,0 +1,21 @@
+{
+  "name": "test.react.checkbox",
+  "version": "0.0.0",
+  "homepage": "https://github.com/vaeum/test.react.checkbox",
+  "authors": [
+    "Alexander Anpleenko <vaeum@yahoo.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "app/lib",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "react": "~0.13.3",
+    "underscore": "~1.8.3"
+  }
+}

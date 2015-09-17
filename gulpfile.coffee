@@ -52,7 +52,7 @@ HTML_PRETTIFY_CONFIG =
 
 gulp.task 'server', ['scss', 'jade'], ->
   browserSync.init
-    server: './build'
+    server: './app'
     open: false
 
   # gulp watch tack
@@ -69,7 +69,7 @@ gulp.task 'scss', ->
     .pipe do csso
     .pipe cssbeautify CSS_BEAUTIFY_CONFIG
     .pipe do csscomb
-    .pipe gulp.dest 'build/css'
+    .pipe gulp.dest 'app/css'
     .pipe browserSync.stream()
 
 gulp.task 'jade', ->
@@ -77,13 +77,13 @@ gulp.task 'jade', ->
     .pipe do jade
     .on 'error', console.log
     .pipe HTMLprettify HTML_PRETTIFY_CONFIG
-    .pipe gulp.dest 'build'
+    .pipe gulp.dest 'app'
     .on 'end', browserSync.reload
 
-gulp.task 'build',["browserify","coffee"], ->
-  gulp.src './build/js/main.js'
+gulp.task 'app',["browserify","coffee"], ->
+  gulp.src './app/js/main.js'
     .pipe do uglify
-    .pipe gulp.dest './build/js'
+    .pipe gulp.dest './app/js'
     .pipe browserSync.stream()
 
   gulp.src 'js/', read: no
@@ -93,7 +93,7 @@ gulp.task 'browserify', ["coffee"], ->
   browserify './js/main.js'
     .bundle()
     .pipe source "main.js"
-    .pipe gulp.dest './build/js'
+    .pipe gulp.dest './app/js'
     .pipe browserSync.stream()
 
 gulp.task 'coffee', ->

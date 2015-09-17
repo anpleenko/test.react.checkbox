@@ -1,13 +1,13 @@
-React = require('react')
+do (React=React, module=module) ->
 
-Checkbox = React.createClass
-  render: ->
-    <div>
-      <label htmlFor={@props.slug}>
-        <input type="checkbox" id={@props.slug} onClick={@props.changeEvent} value={@props.index} checked={@props.checked}/>
-        {@props.names}
-      </label>
-    </div>
+  Checkbox = React.createClass
+    render: ->
+      <div>
+        <label htmlFor={@props.slug}>
+          <input type="checkbox" id={@props.slug} onClick={@props.changeEvent} value={@props.index} checked={@props.checked}/>
+          {@props.names}
+        </label>
+      </div>
 
-module.exports = Checkbox
+  module.exports = Checkbox
 
