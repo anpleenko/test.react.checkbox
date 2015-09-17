@@ -5,7 +5,7 @@
 gulp         = require('gulp')
 
 # browser refresh
-browserSync  = require('browser-sync').create()
+browserSync  = require('browser-sync')
 
 # css compile
 sass         = require('gulp-sass')
@@ -50,16 +50,6 @@ HTML_PRETTIFY_CONFIG =
 #   gulp tasks
 # -----------------------------------
 
-gulp.task 'server', ['scss', 'jade'], ->
-  browserSync.init
-    server: './app'
-    open: false
-
-  # gulp watch tack
-  gulp.watch 'jade/**/*.jade', ['jade']
-  gulp.watch 'scss/**/*.scss', ['scss']
-  gulp.watch 'coffee/**/*.coffee', ['browserify']
-
 gulp.task 'scss', ->
   gulp.src 'scss/**/!(_)*.scss'
     .pipe sass SASS_CONFIG
@@ -80,14 +70,10 @@ gulp.task 'jade', ->
     .pipe gulp.dest 'app'
     .on 'end', browserSync.reload
 
-gulp.task 'app',["browserify","coffee"], ->
-  gulp.src './app/js/main.js'
-    .pipe do uglify
-    .pipe gulp.dest './app/js'
-    .pipe browserSync.stream()
-
-  gulp.src 'js/', read: no
-    .pipe do clean
+gulp.task 'coffee', ->
+  gulp.src 'coffee/**/*.coffee'
+    .pipe do coffeex
+    .pipe gulp.dest 'js'
 
 gulp.task 'browserify', ["coffee"], ->
   browserify './js/main.js'
@@ -96,10 +82,23 @@ gulp.task 'browserify', ["coffee"], ->
     .pipe gulp.dest './app/js'
     .pipe browserSync.stream()
 
-gulp.task 'coffee', ->
-  gulp.src 'coffee/**/*.coffee'
-    .pipe do coffeex
-    .pipe gulp.dest 'js'
+gulp.task 'app',["browserify"], ->
+  gulp.src './app/js/main.js'
+    .pipe do uglify
+    .pipe gulp.dest './app/js'
+    .pipe browserSync.stream()
 
+  gulp.src 'js/', read: no
+    .pipe do clean
 
-gulp.task 'default', ['server', 'scss', 'jade', 'browserify']
+gulp.task 'server', ['scss', 'jade', 'app'], ->
+  browserSync.init
+    server: './app'
+    open: false
+
+  # gulp watch tack
+  gulp.watch 'jade/**/*.jade', ['jade']
+  gulp.watch 'scss/**/*.scss', ['scss']
+  gulp.watch 'coffee/**/*.coffee', ['browserify']
+
+gulp.task 'default', ['server']
